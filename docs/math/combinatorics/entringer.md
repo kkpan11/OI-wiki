@@ -21,9 +21,9 @@ $$
 E(n,k)=E(n,k-1)+E(n-1,n-k)
 $$
 
-## Seidel-Entringer-Arnold 三角
+## Seidel–Entringer–Arnold 三角
 
-恩特林格数的一个适当排列的数字三角，称为 Seidel-Entringer-Arnold 三角（Seidel-Entringer-Arnold triangle，[OEIS A008280](http://oeis.org/A008280)）。该三角是按照「牛耕」顺序（ox-plowing order）排列的恩特林格数 $E_(n,k)$：
+恩特林格数的一个适当排列的数字三角，称为 Seidel–Entringer–Arnold 三角（Seidel–Entringer–Arnold triangle，[OEIS A008280](http://oeis.org/A008280)）。该三角是按照「牛耕」顺序（ox-plowing order）排列的恩特林格数 $E_(n,k)$：
 
 $$
 \begin{aligned}
@@ -55,7 +55,7 @@ $$
 \sum_{m=0}^\infty\sum_{n=0}^\infty E\left(m+n,\frac{1}{2}\left(m+n+{(-1)}^{m+n}(n-m)\right)\right)\frac{x^m}{m!}\frac{x^n}{n!}=\frac{\cos x+\sin x}{\cos (x+y)}
 $$
 
-这个生成函数的系数分布事实上是上面的 Seidel-Entringer-Arnold 三角的简单拉伸变形：
+这个生成函数的系数分布事实上是上面的 Seidel–Entringer–Arnold 三角的简单拉伸变形：
 
 $$
 \begin{array}{ccccc}
@@ -112,13 +112,13 @@ $$
 交替置换的首元素大于第二个元素，大小关系为：
 
 $$
-c1>c2<c3>\cdots
+c_1>c_2<c_3>\cdots
 $$
 
 反交替置换的首元素小于第二个元素，大小关系为：
 
 $$
-c1<c2>c3<\cdots
+c_1<c_2>c_3<\cdots
 $$
 
 如果将 $1$ 和 $n$ 位置互换，$2$ 和 $n-1$ 位置互换，以此类推，即可将交替置换与反交替置换两个集合互换。因此，交替置换与反交替置换的个数相等，恰好为 zigzag 置换的一半。
@@ -143,7 +143,7 @@ $$
 
 接下来试着求解 $A_n$。
 
-从 $1$ 到 $n$ 之中，选取 $k$ 个数构成子集，有 $C_n^k$ 种选法。
+从 $1$ 到 $n$ 之中，选取 $k$ 个数构成子集，有 $\dbinom{n}{k}$ 种选法。
 
 在这个 $k$ 元子集中，选反交替置换 $u$，有 $A_k$ 种选法；用全集减掉这个 $k$ 元子集，剩余的 $n-k$ 元子集中，选反交替置换 $v$，有 $A_{n-k}$ 种选法。
 
@@ -152,7 +152,7 @@ $$
 因此有递推关系：
 
 $$
-2A_{n+1}=\sum_{k=0}^n C_n^k A_k A_{n-k}
+2A_{n+1}=\sum_{k=0}^n \dbinom{n}{k} A_k A_{n-k}
 $$
 
 $$
@@ -194,7 +194,7 @@ $$
 当 $n$ 为偶数时，偶数项下标的 zigzag 数也称「正割数」$S_n$ 或者「zig 数」。有关系：
 
 $$
-A_n=i^nE_n
+A_n=(-1)^{n/2}E_n
 $$
 
 前几项为（[OEIS A000364](http://oeis.org/A000364)）：
@@ -206,7 +206,7 @@ $$
 当 $n$ 为奇数时，奇数项下标的 zigzag 数也称「正切数」$T_n$ 或者「zag 数」。有关系：
 
 $$
-A_n=-\frac{{2i}^{n+1}(2^{n+1}-1)B_{n+1}}{n+1}
+A_n=\frac{(-1)^{(n-1)/2}2^{n+1}(2^{n+1}-1)B_{n+1}}{n+1}
 $$
 
 前几项为（[OEIS A000182](http://oeis.org/A000182)）：
@@ -232,3 +232,7 @@ $$
 $$
 
 构成 zigzag 数的生成函数。
+
+## 参考资料与链接
+
+1.  [Alternating permutation - Wikipedia](https://en.wikipedia.org/wiki/Alternating_permutation)

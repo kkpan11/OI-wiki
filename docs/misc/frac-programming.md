@@ -61,7 +61,7 @@ Dinkelbach 算法的大概思想是每次用上一轮的答案当做新的 $L$ �
     #include <iostream>
     using namespace std;
     
-    inline int read() {
+    int read() {
       int X = 0, w = 1;
       char c = getchar();
       while (c < '0' || c > '9') {
@@ -72,13 +72,13 @@ Dinkelbach 算法的大概思想是每次用上一轮的答案当做新的 $L$ �
       return X * w;
     }
     
-    const int N = 100000 + 10;
-    const double eps = 1e-6;
+    constexpr int N = 100000 + 10;
+    constexpr double eps = 1e-6;
     
     int n;
     double a[N], b[N];
     
-    inline bool check(double mid) {
+    bool check(double mid) {
       double s = 0;
       for (int i = 1; i <= n; ++i)
         if (a[i] - mid * b[i] > 0)  // 如果权值大于 0
@@ -121,9 +121,9 @@ Dinkelbach 算法的大概思想是每次用上一轮的答案当做新的 $L$ �
 把第 $i$ 个物品的权值设为 $a_i-mid\times b_i$，然后选最大的 $n-k$ 个即可得到最大值。
 
 ```cpp
-inline bool cmp(double x, double y) { return x > y; }
+bool cmp(double x, double y) { return x > y; }
 
-inline bool check(double mid) {
+bool check(double mid) {
   int s = 0;
   for (int i = 1; i <= n; ++i) c[i] = a[i] - mid * b[i];
   sort(c + 1, c + n + 1, cmp);
@@ -151,7 +151,7 @@ inline bool check(double mid) {
 ```cpp
 double f[1010];
 
-inline bool check(double mid) {
+bool check(double mid) {
   for (int i = 1; i <= W; i++) f[i] = -1e9;
   for (int i = 1; i <= n; i++)
     for (int j = W; j >= 0; j--) {
@@ -168,7 +168,7 @@ inline bool check(double mid) {
 
 把 $a_i-mid\times b_i$ 作为每条边的权值，那么最小生成树就是最小值，
 
-代码就是求最小生成树，我就不放代码了。
+代码就是求最小生成树，故省略。
 
 ### [\[HNOI2009\] 最小圈](https://www.luogu.com.cn/problem/P3199)
 
@@ -181,7 +181,7 @@ inline bool check(double mid) {
 另外本题存在一种复杂度 $O(nm)$ 的算法，如果有兴趣可以阅读 [这篇文章](https://www.cnblogs.com/y-clever/p/7043553.html)。
 
 ```cpp
-inline int SPFA(int u, double mid) {  // 判负环
+int SPFA(int u, double mid) {  // 判负环
   vis[u] = 1;
   for (int i = head[u]; i; i = e[i].nxt) {
     int v = e[i].v;
@@ -195,11 +195,11 @@ inline int SPFA(int u, double mid) {  // 判负环
   return 0;
 }
 
-inline bool check(double mid) {  // 如果有负环返回 true
+bool check(double mid) {  // 如果有负环返回 true
   for (int i = 1; i <= n; ++i) dis[i] = 0, vis[i] = 0;
   for (int i = 1; i <= n; ++i)
-    if (SPFA(i, mid)) return 1;
-  return 0;
+    if (SPFA(i, mid)) return true;
+  return false;
 }
 ```
 
@@ -213,4 +213,4 @@ inline bool check(double mid) {  // 如果有负环返回 true
 
 -   [JSOI2016 最佳团体](https://loj.ac/problem/2071)
 -   [SDOI2017 新生舞会](https://loj.ac/problem/2003)
--   [UVa1389 Hard Life](https://www.luogu.com.cn/problem/UVA1389)
+-   [UVa1389 Hard Life](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=24&page=show_problem&problem=4135)

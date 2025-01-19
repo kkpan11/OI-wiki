@@ -66,10 +66,11 @@
 
 ??? note "参考代码（分块套树状数组 - 1s）"
     ```cpp
-    #include <bits/stdc++.h>
+    #include <cmath>
+    #include <cstdio>
     using namespace std;
-    const int N = 2e5 + 5;
-    const int M = sqrt(N) + 5;
+    constexpr int N = 2e5 + 5;
+    constexpr int M = 447 + 5;  // sqrt(N) + 5
     
     int n, m, pa[N], pb[N];
     
@@ -92,7 +93,7 @@
         for (int i = L[j]; i <= R[j]; ++i) block_id[i] = j;
     }
     
-    inline int lb(int x) { return x & -x; }
+    int lb(int x) { return x & -x; }
     
     void add(int p, int v, int d) {
       for (int i = block_id[p]; i <= block_cnt; i += lb(i))
@@ -148,12 +149,13 @@
     }
     ```
 
-??? node "参考代码（树状数组套 Treap-TLE）"
+??? node "参考代码（树状数组套 Treap—TLE）"
     ```cpp
-    #include <bits/stdc++.h>
+    #include <cstdio>
+    #include <random>
     using namespace std;
-    const int N = 2e5 + 5;
-    mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+    constexpr int N = 2e5 + 5;
+    mt19937 rng(random_device{}());
     
     int n, m, pa[N], pb[N];
     
@@ -166,9 +168,9 @@
         node(int _v) : l(NULL), r(NULL), sz(1), rnd(rng()), v(_v) {}
       };
     
-      inline int get_size(node*& p) { return p ? p->sz : 0; }
+      int get_size(node*& p) { return p ? p->sz : 0; }
     
-      inline void push_up(node*& p) {
+      void push_up(node*& p) {
         if (!p) return;
         p->sz = get_size(p->l) + get_size(p->r) + 1;
       }
@@ -250,7 +252,7 @@
     // Fenwick Tree
     Treap T[N];
     
-    inline int lb(int x) { return x & -x; }
+    int lb(int x) { return x & -x; }
     
     void ins(int x, int v) {
       for (; x <= n; x += lb(x)) T[x].ins(v);
@@ -311,10 +313,12 @@
 
 ??? note "参考代码（分块套树状数组 - 78ms）"
     ```cpp
-    #include <bits/stdc++.h>
+    #include <cmath>
+    #include <cstdio>
+    #include <vector>
     using namespace std;
-    const int N = 1e5 + 5;
-    const int M = sqrt(N) + 5;
+    constexpr int N = 1e5 + 5;
+    constexpr int M = 316 + 5;  // sqrt(N) + 5
     
     // 分块
     int nn, b[N], block_size, block_cnt, block_id[N], L[N], R[N], T[M][N];
@@ -336,7 +340,7 @@
         for (int i = L[j]; i <= R[j]; ++i) block_id[i] = j;
     }
     
-    inline int lb(int x) { return x & -x; }
+    int lb(int x) { return x & -x; }
     
     // d = 1: 加点(p, v)
     // d = -1: 删点(p, v)
@@ -418,14 +422,16 @@
 
 ??? note "参考代码（线段树套 Treap-468ms）"
     ```cpp
-    #include <bits/stdc++.h>
+    #include <cstdio>
+    #include <random>
+    #include <vector>
     using namespace std;
-    const int N = 1e5 + 5;
+    constexpr int N = 1e5 + 5;
     
     vector<int> g[N];
     int n, a[N];
     
-    mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+    mt19937 rng(random_device{}());
     
     struct Treap {
       struct node {
@@ -436,9 +442,9 @@
         node(int _v) : l(NULL), r(NULL), rnd(rng()), sz(1), v(_v) {}
       };
     
-      inline int get_size(node*& p) { return p ? p->sz : 0; }
+      int get_size(node*& p) { return p ? p->sz : 0; }
     
-      inline void push_up(node*& p) {
+      void push_up(node*& p) {
         if (!p) return;
         p->sz = get_size(p->l) + get_size(p->r) + 1;
       }

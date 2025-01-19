@@ -1,9 +1,9 @@
 #include <algorithm>
-#include <cstdio>
+#include <iostream>
 #include <stack>
 #include <vector>
 using namespace std;
-typedef long long ll;
+using ll = long long;
 int n;
 int m;
 int ask;
@@ -19,13 +19,13 @@ struct bcj {
 
   stack<opt> st;
 
-  inline void ih() {
+  void ih() {
     for (int i = 1; i <= n; i++) fa[i] = i, size[i] = 1;
   }
 
-  inline int f(int x) { return (fa[x] == x) ? x : f(fa[x]); }
+  int f(int x) { return (fa[x] == x) ? x : f(fa[x]); }
 
-  inline void u(int x, int y) {  // 带撤回
+  void u(int x, int y) {  // 带撤回
     int u = f(x);
     int v = f(y);
     if (u == v) return;
@@ -38,14 +38,14 @@ struct bcj {
     st.push(o);
   }
 
-  inline void undo() {
+  void undo() {
     opt o = st.top();
     st.pop();
     fa[o.v] = o.v;
     size[o.u] -= size[o.v];
   }
 
-  inline void clear(int tim) {
+  void clear(int tim) {
     while (st.size() > tim) {
       undo();
     }
@@ -80,7 +80,7 @@ vector<edge> tr;
 ll res[30];
 int tim[30];
 
-inline void pushdown(int dep)  // 缩边
+void pushdown(int dep)  // 缩边
 {
   tr.clear();  // 这里要复制一份，以免无法回撤操作
   for (int i = 0; i < ve[dep].size(); i++) {
@@ -122,7 +122,7 @@ inline void pushdown(int dep)  // 缩边
   return;
 }
 
-inline void solve(int l, int r, int dep) {
+void solve(int l, int r, int dep) {
   tim[dep] = s.st.size();
   int mid = (l + r) / 2;
   if (r - l == 1) {  // 终止条件
@@ -194,14 +194,15 @@ inline void solve(int l, int r, int dep) {
 }
 
 int main() {
-  scanf("%d%d%d", &n, &m, &ask);
+  cin.tie(nullptr)->sync_with_stdio(false);
+  cin >> n >> m >> ask;
   s.ih();
   s1.ih();
   for (int i = 1; i <= m; i++) {
-    scanf("%d%d%lld", &e[i].u, &e[i].v, &e[i].val);
+    cin >> e[i].u >> e[i].v >> e[i].val;
   }
   for (int i = 1; i <= ask; i++) {
-    scanf("%d%lld", &q[i].num, &q[i].val);
+    cin >> q[i].num >> q[i].val;
   }
   for (int i = 1; i <= ask; i++) {  // 初始动态边
     book[q[i].num] = true;
@@ -210,16 +211,16 @@ int main() {
     p.v = e[q[i].num].v;
     vq.push_back(p);
   }
-  for (int i = 1; i <= m; i++) {
+  for (int i = 1; i <= m; i++) {  // 初始静态
     if (book[i]) continue;
     ve[1].push_back(e[i]);
-  }  // 初始静态
+  }
   for (int i = 1; i <= ask; i++) {
     book[q[i].num] = false;
   }
   solve(0, ask, 1);
   for (int i = 1; i <= ask; i++) {
-    printf("%lld\n", q[i].ans);
+    cout << q[i].ans << '\n';
   }
   return 0;
 }

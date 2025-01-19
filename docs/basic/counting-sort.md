@@ -1,4 +1,4 @@
-???+ warning
+???+ warning "提醒"
     本页面要介绍的不是 [**基数排序**](./radix-sort.md)。
 
 本页面将简要介绍计数排序。
@@ -29,7 +29,7 @@
 
 如果按照 $A$ 的逆序进行排列，那么显然排序后的数组将保持 $A$ 的原序（相同 key 值情况下），也即得到一种稳定的排序算法。
 
-![counting sort animate example](images/counting-sort-1-animate-example.svg)
+![counting sort animate example](images/counting-sort-animate.svg)
 
 ## 性质
 
@@ -64,37 +64,13 @@ $$
 $$
 
 === "C++"
-
     ```cpp
-    const int N = 100010;
-    const int W = 100010;
-
-    int n, w, a[N], cnt[W], b[N];
-
-    void counting_sort() {
-        memset(cnt, 0, sizeof(cnt));
-        for (int i = 1; i <= n; ++i) ++cnt[a[i]];
-        for (int i = 1; i <= w; ++i) cnt[i] += cnt[i - 1];
-        for (int i = n; i >= 1; --i) b[cnt[a[i]]--] = a[i];
-    }
+    --8<-- "docs/basic/code/counting-sort/counting-sort_1.cpp"
     ```
 
 === "Python"
-
     ```python
-    N = W = 100010
-    n = w = 0
-    a = b = [0] * N
-    cnt = [0] * W
-
-    def counting_sort():
-        for i in range(1, n + 1):
-            cnt[a[i]] += 1
-        for i in range(1, w + 1):
-            cnt[i] += cnt[i - 1]
-        for i in range(n, 0, -1):
-            b[cnt[a[i]] - 1] = a[i]
-            cnt[a[i]] -= 1
+    --8<-- "docs/basic/code/counting-sort/counting-sort_1.py"
     ```
 
 ## 参考资料与注释
