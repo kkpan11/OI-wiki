@@ -1,4 +1,4 @@
-author: DanJoshua, opsiff, yzy-1
+author: DanJoshua, opsiff, yzy-1, yingqi-z20
 
 ## 定义
 
@@ -24,11 +24,11 @@ author: DanJoshua, opsiff, yzy-1
 
 ***
 
-## Stoer-Wagner 算法
+## Stoer–Wagner 算法
 
 ### 引入
 
-Stoer-Wagner 算法在 1995 年由*Mechthild Stoer*与*Frank Wagner*提出，是一种通过 **递归** 的方式来解决 **无向正权图** 上的全局最小割问题的算法。
+Stoer–Wagner 算法在 1995 年由*Mechthild Stoer*与*Frank Wagner*提出，是一种通过 **递归** 的方式来解决 **无向正权图** 上的全局最小割问题的算法。
 
 ### 性质
 
@@ -42,9 +42,9 @@ Stoer-Wagner 算法在 1995 年由*Mechthild Stoer*与*Frank Wagner*提出，是
 2.  「合并」点 $s, t$，如果图 $G$ 中 $|V|$ 大于 $1$，则回到第一步。
 3.  输出所有*cut of phase*的最小值。
 
-合并两点 $s, t$：删除 $s, t$ 之间的连边 $(s, t)$，对于 $G/\{s, t\}$ 中任意一点 $k$，删除 $(t, k)$，并将其边权 $d(t, k)$ 加到 $d(s, k)$ 上
+合并两点 $s, t$：删除 $s, t$ 之间的连边 $(s, t)$，对于 $G \setminus \{s, t\}$ 中任意一点 $k$，删除 $(t, k)$，并将其边权 $d(t, k)$ 加到 $d(s, k)$ 上
 
-解释：如果 $s, t$ 在同一连通块，对于 $G/\{s, t\}$ 中的一点 $k$，假如 $(k, s) \in C_{\min}$，那么 $(k, t) \in C_{\min}$ 也一定成立，否则因为 $s, t$ 连通，$k, t$ 连通，导致 $s, k$ 在同一连通块，此时 $C = C_{\min} / {s}$ 将比 $C_{\min}$ 更优。反之亦然。所以 $s, t$ 可以看作同一点。
+解释：如果 $s, t$ 在同一连通块，对于 $G \setminus \{s, t\}$ 中的一点 $k$，假如 $(k, s) \in C_{\min}$，那么 $(k, t) \in C_{\min}$ 也一定成立，否则因为 $s, t$ 连通，$k, t$ 连通，导致 $s, k$ 在同一连通块，此时 $C = C_{\min} \setminus \{(t, k)\}$ 将比 $C_{\min}$ 更优。反之亦然。所以 $s, t$ 可以看作同一点。
 
 步骤 1 考虑了 $s,t$ 不在同一连通块的情形，步骤 2 考虑了剩余的情况。由于每次执行步骤 2 都会使 $|V|$ 减小 $1$，因此算法将在进行 $|V| - 1$ 后结束。
 
@@ -105,7 +105,7 @@ $w(A, i) = \sum_{j \in A} d(i, j)$
 
 由于 $\operatorname{pos}(s) < \operatorname{pos}(t)$，并且 $s, t$ 不在同一连通块，因此 $t$ 会被激活，由此可以得出 $w(A_t, t) \le w(C_t) = w(C)$。
 
-??? note "[P5632【模板】Stoer-Wagner 算法](https://www.luogu.com.cn/problem/P5632)"
+??? note "[P5632【模板】Stoer–Wagner 算法](https://www.luogu.com.cn/problem/P5632)"
     ```cpp
     --8<-- "docs/graph/code/stoer-wagner/stoer-wagner_1.cpp"
     ```

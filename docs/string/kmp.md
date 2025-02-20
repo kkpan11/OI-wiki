@@ -11,7 +11,7 @@ author: Ir1d, LeoJacob, Xeonacid, greyqz, StudyingFather, Marcythm, minghu6, Bac
 给定一个长度为 $n$ 的字符串 $s$，其 **前缀函数** 被定义为一个长度为 $n$ 的数组 $\pi$。
 其中 $\pi[i]$ 的定义是：
 
-1.  如果子串 $s[0\dots i]$ 有一对相等的真前缀与真后缀：$s[0\dots k-1]$ 和 $s[i - (k - 1) \dots i]$，那么 $\pi[i]$ 就是这个相等的真前缀（或者真后缀，因为它们相等））的长度，也就是 $\pi[i]=k$；
+1.  如果子串 $s[0\dots i]$ 有一对相等的真前缀与真后缀：$s[0\dots k-1]$ 和 $s[i - (k - 1) \dots i]$，那么 $\pi[i]$ 就是这个相等的真前缀（或者真后缀，因为它们相等）的长度，也就是 $\pi[i]=k$；
 2.  如果不止有一对相等的，那么 $\pi[i]$ 就是其中最长的那一对的长度；
 3.  如果没有相等的，那么 $\pi[i]=0$。
 
@@ -60,8 +60,9 @@ $\pi[6]=0$，因为 `abcabcd` 无相等的真前缀和真后缀
     具体实现如下：
     
     === "C++"
-    
         ```cpp
+        // 注：
+        // string substr (size_t pos = 0, size_t len = npos) const;
         vector<int> prefix_function(string s) {
           int n = (int)s.length();
           vector<int> pi(n);
@@ -76,22 +77,34 @@ $\pi[6]=0$，因为 `abcabcd` 无相等的真前缀和真后缀
         ```
     
     === "Python"
-    
         ```python
         def prefix_function(s):
             n = len(s)
             pi = [0] * n
             for i in range(1, n):
                 for j in range(i, -1, -1):
-                    if s[0 : j] == s[i - j + 1 : i + 1]:
+                    if s[0:j] == s[i - j + 1 : i + 1]:
                         pi[i] = j
                         break
             return pi
         ```
     
-    注：
-    
-    -   `string substr (size_t pos = 0, size_t len = npos) const;`
+    === "Java"
+        ```java
+        static int[] prefix_function(String s) {
+            int n = s.length();
+            int[] pi = new int[n];
+            for (int i = 1; i < n; i++) {
+        	    for (int j = i; j >= 0; j--) {
+        		    if (s.substring(0, j).equals(s.substring(i - j + 1, i + 1))) {
+        			    pi[i] = j;
+        			    break;
+        		    }
+        	    }
+            }
+            return pi;
+        }
+        ```
 
 显见该算法的时间复杂度为 $O(n^3)$，具有很大的改进空间。
 
@@ -113,7 +126,6 @@ $$
     此时的改进的算法为：
     
     === "C++"
-    
         ```cpp
         vector<int> prefix_function(string s) {
           int n = (int)s.length();
@@ -129,17 +141,33 @@ $$
         ```
     
     === "Python"
-    
         ```python
         def prefix_function(s):
             n = len(s)
             pi = [0] * n
             for i in range(1, n):
                 for j in range(pi[i - 1] + 1, -1, -1):
-                    if s[0 : j] == s[i - j + 1 : i + 1]:
+                    if s[0:j] == s[i - j + 1 : i + 1]:
                         pi[i] = j
                         break
             return pi
+        ```
+    
+    === "Java"
+        ```java
+        static int[] prefix_function(String s) {
+            int n = s.length();
+            int[] pi = new int[n];
+            for (int i = 1; i < n; i++) {
+        	    for (int j = pi[i - 1] + 1; j >= 0; j--) {
+        		    if (s.substring(0, j).equals(s.substring(i - j + 1, i + 1))) {
+        			    pi[i] = j;
+        			    break;
+        		    }
+        	    }
+            }
+            return pi;
+        }
         ```
 
 在这个初步改进的算法中，在计算每个 $\pi[i]$ 时，最好的情况是第一次字符串比较就完成了匹配，也就是说基础的字符串比较次数是 `n-1` 次。
@@ -180,7 +208,6 @@ $$
 
 ???+ note "实现"
     === "C++"
-    
         ```cpp
         vector<int> prefix_function(string s) {
           int n = (int)s.length();
@@ -196,7 +223,6 @@ $$
         ```
     
     === "Python"
-    
         ```python
         def prefix_function(s):
             n = len(s)
@@ -210,12 +236,31 @@ $$
                 pi[i] = j
             return pi
         ```
+    
+    === "Java"
+        ```java
+        static int[] prefix_function(String s) {
+            int n = s.length();
+            int[] pi = new int[n];
+            for (int i = 1; i < n; i++) {
+        	    int j = pi[i - 1];
+        	    while (j > 0 && s.charAt(i) != s.charAt(j)) {
+        		    j = pi[j - 1];
+        	    }
+        	    if (s.charAt(i) == s.charAt(j)) {
+        		    j++;
+        	    }
+        	    pi[i] = j;
+            }
+            return pi;
+        }
+        ```
 
 这是一个 **在线** 算法，即其当数据到达时处理它——举例来说，你可以一个字符一个字符的读取字符串，立即处理它们以计算出每个字符的前缀函数值。该算法仍然需要存储字符串本身以及先前计算过的前缀函数值，但如果我们已经预先知道该字符串前缀函数的最大可能取值 $M$，那么我们仅需要存储该字符串的前 $M + 1$ 个字符以及对应的前缀函数值。
 
 ## 应用
 
-### 在字符串中查找子串：Knuth-Morris-Pratt 算法
+### 在字符串中查找子串：Knuth–Morris–Pratt 算法
 
 该算法由 Knuth、Pratt 和 Morris 在 1977 年共同发布<sup>[\[1\]](https://epubs.siam.org/doi/abs/10.1137/0206024)</sup>。
 
@@ -233,11 +278,10 @@ $$
 
 正如在前缀函数的计算中已经提到的那样，如果我们知道前缀函数的值永远不超过一特定值，那么我们不需要存储整个字符串以及整个前缀函数，而只需要二者开头的一部分。在我们这种情况下这意味着只需要存储字符串 $s + \#$ 以及相应的前缀函数值即可。我们可以一次读入字符串 $t$ 的一个字符并计算当前位置的前缀函数值。
 
-因此 Knuth-Morris-Pratt 算法（简称 KMP 算法）用 $O(n + m)$ 的时间以及 $O(n)$ 的内存解决了该问题。
+因此 Knuth–Morris–Pratt 算法（简称 KMP 算法）用 $O(n + m)$ 的时间以及 $O(n)$ 的内存解决了该问题。
 
 ???+ note "实现"
     === "C++"
-    
         ```cpp
         vector<int> find_occurrences(string text, string pattern) {
           string cur = pattern + '#' + text;
@@ -245,18 +289,16 @@ $$
           vector<int> v;
           vector<int> lps = prefix_function(cur);
           for (int i = sz2 + 1; i <= sz1 + sz2; i++) {
-            if (lps[i] == sz2)
-              v.push_back(i - 2 * sz2);
+            if (lps[i] == sz2) v.push_back(i - 2 * sz2);
           }
           return v;
         }
         ```
     
     === "Python"
-    
         ```python
         def find_occurrences(t, s):
-            cur = s + '#' + t
+            cur = s + "#" + t
             sz1, sz2 = len(t), len(s)
             ret = []
             lps = prefix_function(cur)
@@ -264,6 +306,22 @@ $$
                 if lps[i] == sz2:
                     ret.append(i - 2 * sz2)
             return ret
+        ```
+    
+    === "Java"
+        ```java
+        static List<Integer> find_occurrences(String text, String pattern) {
+            String cur = pattern + '#' + text;
+            int sz1 = text.length(), sz2 = pattern.length();
+            List<Integer> v = new ArrayList<>();
+            int[] lps = prefix_function(cur);
+            for (int i = sz2 + 1; i <= sz1 + sz2; i++) {
+        	    if (lps[i] == sz2) {
+        		    v.add(i - 2 * sz2);
+        	    }
+            }
+            return v;
+        }
         ```
 
 ### 字符串的周期
@@ -286,7 +344,6 @@ $$
 
 ???+ note "实现"
     === "C++"
-    
         ```cpp
         vector<int> ans(n + 1);
         for (int i = 0; i < n; i++) ans[pi[i]]++;
@@ -295,7 +352,6 @@ $$
         ```
     
     === "Python"
-    
         ```python
         ans = [0] * (n + 1)
         for i in range(0, n):
@@ -310,7 +366,7 @@ $$
 
 在上述代码中我们首先统计每个前缀函数值在数组 $\pi$ 中出现了多少次，然后再计算最后答案：如果我们知道长度为 $i$ 的前缀出现了恰好 $\text{ans}[i]$ 次，那么该值必须被叠加至其最长的既是后缀也是前缀的子串的出现次数中。在最后，为了统计原始的前缀，我们对每个结果加 $1$。
 
-现在考虑第二个问题。我们应用来自 Knuth-Morris-Pratt 的技巧：构造一个字符串 $s + \# + t$ 并计算其前缀函数。与第一个问题唯一的不同之处在于，我们只关心与字符串 $t$ 相关的前缀函数值，即 $i \ge n + 1$ 的 $\pi[i]$。有了这些值之后，我们可以同样应用在第一个问题中的算法来解决该问题。
+现在考虑第二个问题。我们应用来自 Knuth–Morris–Pratt 的技巧：构造一个字符串 $s + \# + t$ 并计算其前缀函数。与第一个问题唯一的不同之处在于，我们只关心与字符串 $t$ 相关的前缀函数值，即 $i \ge n + 1$ 的 $\pi[i]$。有了这些值之后，我们可以同样应用在第一个问题中的算法来解决该问题。
 
 ### 一个字符串中本质不同子串的数目
 
@@ -467,12 +523,12 @@ $$
 
 ## 练习题目
 
--   [UVA 455 "Periodic Strings"](http://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=396)
--   [UVA 11022 "String Factoring"](http://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=1963)
--   [UVA 11452 "Dancing the Cheeky-Cheeky"](http://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=2447)
--   [UVA 12604 - Caesar Cipher](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=4282)
--   [UVA 12467 - Secret Word](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=3911)
--   [UVA 11019 - Matrix Matcher](https://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=1960)
+-   [UVa 455 "Periodic Strings"](http://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=396)
+-   [UVa 11022 "String Factoring"](http://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=1963)
+-   [UVa 11452 "Dancing the Cheeky-Cheeky"](http://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=2447)
+-   [UVa 12604 - Caesar Cipher](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=4282)
+-   [UVa 12467 - Secret Word](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=3911)
+-   [UVa 11019 - Matrix Matcher](https://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=1960)
 -   [SPOJ - Pattern Find](http://www.spoj.com/problems/NAJPF/)
 -   [Codeforces - Anthem of Berland](http://codeforces.com/contest/808/problem/G)
 -   [Codeforces - MUH and Cube Walls](http://codeforces.com/problemset/problem/471/D)

@@ -1,6 +1,6 @@
 ## 引入
 
-概率 DP 用于解决概率问题与期望问题，建议先对 [概率 & 期望](../math/probability/exp-var.md) 的内容有一定了解。一般情况下，解决概率问题需要顺序循环，而解决期望问题使用逆序循环，如果定义的状态转移方程存在后效性问题，还需要用到 [高斯消元](../math/linear-algebra/gauss.md) 来优化。概率 DP 也会结合其他知识进行考察，例如 [状态压缩](./state.md)，树上进行 DP 转移等。
+概率 DP 用于解决概率问题与期望问题，建议先对 [概率 & 期望](../math/probability/exp-var.md) 的内容有一定了解。一般情况下，解决概率问题需要顺序循环，而解决期望问题使用逆序循环，如果定义的状态转移方程存在后效性问题，还需要用到 [高斯消元](../math/numerical/gauss.md) 来优化。概率 DP 也会结合其他知识进行考察，例如 [状态压缩](./state.md)，树上进行 DP 转移等。
 
 ## DP 求概率
 
@@ -102,8 +102,8 @@ $$
 ### 习题
 
 -   [POJ2096 Collecting Bugs](http://poj.org/problem?id=2096)
--   [HDU3853 LOOPS](https://vjudge.net/problem/HDU-3853)
--   [HDU4035 Maze](https://vjudge.net/problem/HDU-4035)
+-   [HDU3853 LOOPS](https://acm.hdu.edu.cn/showproblem.php?pid=3853)
+-   [HDU4035 Maze](https://acm.hdu.edu.cn/showproblem.php?pid=4035)
 -   [「NOIP2016」换教室](http://uoj.ac/problem/262)
 -   [「SCOI2008」奖励关](https://www.luogu.com.cn/problem/P2473)
 
@@ -130,18 +130,19 @@ $$
 -   $2f_{i,m}-f_{i,m-1}=3+f_{i+1,m}$
 
 由于是逆序的递推，所以每一个 $f_{i+1,j}$ 是已知的。
-由于有 $m$ 列，所以右边相当于是一个 $m$ 行的列向量，那么左边就是 $m$ 行 $m$ 列的矩阵。使用增广矩阵，就变成了 m 行 m+1 列的矩阵，然后进行 [高斯消元](../math/linear-algebra/gauss.md) 即可解出答案。
+由于有 $m$ 列，所以右边相当于是一个 $m$ 行的列向量，那么左边就是 $m$ 行 $m$ 列的矩阵。使用增广矩阵，就变成了 m 行 m+1 列的矩阵，然后进行 [高斯消元](../math/numerical/gauss.md) 即可解出答案。
 
 ### 实现
 
 ??? note "参考实现"
     ```c++
-    #include <bits/stdc++.h>
+    #include <cstdio>
+    #include <cstring>
     using namespace std;
     
-    const int maxn = 1e3 + 10;
+    constexpr int MAXN = 1e3 + 10;
     
-    double a[maxn][maxn], f[maxn];
+    double a[MAXN][MAXN], f[MAXN];
     int n, m;
     
     void solve(int x) {
@@ -195,7 +196,7 @@ $$
 ### 习题
 
 -   [CodeForce 24 D Broken robot](https://codeforces.com/problemset/problem/24/D)
--   [HDU Time Travel](https://vjudge.net/problem/HDU-4418)
+-   [HDU 4418 Time Travel](https://acm.hdu.edu.cn/showproblem.php?pid=4418)
 -   [「HNOI2013」游走](https://loj.ac/problem/2383)
 
 ## 参考文献

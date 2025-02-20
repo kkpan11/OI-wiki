@@ -46,6 +46,27 @@ $$
 
 容易想到我们在每个块内递归地构造上述结构以支持块内的查询。对于大小为 $1$ 的块我们可以 $O(1)$ 地回答询问。这样我们就建出了一棵树，每一个结点代表序列的一个区间。叶子结点的区间长度为 $1$ 或 $2$。一个大小为 $k$ 的结点有 $O(\sqrt{k})$ 个子节点，于是整棵树的高度是 $O(\log\log n)$ 的，每一层的区间总长是 $O(n)$ 的，因此我们构建这棵树的复杂度是 $O(n\log\log n)$ 的。
 
+??? note "树高度的证明"
+    根据定义，设「控制」$n$ 个元素的结点的子树高度为 $T(n)$，可以写出递归式：
+    
+    $$
+    T(n)=T(\sqrt n)+1
+    $$
+
+    作换元 $n=2^m$ 得
+
+    $$
+    T(2^m)=T(2^{\frac m2})+1
+    $$
+
+    再定义 $S(m)=T(2^m)$，代入有
+
+    $$
+    S(m)=S(\dfrac m2)+1
+    $$
+
+    根据主定理，可知 $S(m)=O(\log m)$，因此 $T(n)=S(\log n)=O(\log\log n)$.
+
 现在我们可以在 $O(\log\log n)$ 的时间内回答询问。对于询问 $[l,r]$，我们只需要快速找到一个区间长度最小的结点 $u$ 使得 $u$ 能包含 $[l,r]$，这样 $[l,r]$ 在 $u$ 的分块区间中一定是跨块的，就可以 $O(1)$ 地计算答案了。查询一次的总体复杂度是 $O(\log\log n)$，因为树高是 $O(\log\log n)$ 的。不过我们仍可以优化这个过程。
 
 ### 优化询问复杂度
@@ -70,7 +91,7 @@ $$
 
 因此我们需要检查区间两个端点是否只有后 $k$ 位不同，即 $l\oplus r\le 2^k-1$。因此我们可以快速找到答案区间所在的层：
 
-1.  对于每个 $i\in [1,n]$，我们找到找到 $i$ 最高位上的 $1$；
+1.  对于每个 $i\in [1,n]$，我们找到 $i$ 最高位上的 $1$；
 2.  现在对于一个询问 $[l,r]$，我们计算 $l\oplus r$ 的最高位，这样就可以快速确定答案区间所在的层。
 
 这样我们就可以在 $O(1)$ 的时间内回答询问啦。
@@ -146,7 +167,7 @@ Sqrt Tree 也支持区间覆盖操作 $\operatorname{Update}(l,r,x)$，即把区
 ```cpp
 SqrtTreeItem op(const SqrtTreeItem &a, const SqrtTreeItem &b);
 
-inline int log2Up(int n) {
+int log2Up(int n) {
   int res = 0;
   while ((1 << res) < n) {
     res++;
@@ -159,9 +180,9 @@ class SqrtTree {
   int n, lg, indexSz;
   vector<SqrtTreeItem> v;
   vector<int> clz, layers, onLayer;
-  vector<vector<SqrtTreeItem> > pref, suf, between;
+  vector<vector<SqrtTreeItem>> pref, suf, between;
 
-  inline void buildBlock(int layer, int l, int r) {
+  void buildBlock(int layer, int l, int r) {
     pref[layer][l] = v[l];
     for (int i = l + 1; i < r; i++) {
       pref[layer][i] = op(pref[layer][i - 1], v[i]);
@@ -172,7 +193,7 @@ class SqrtTree {
     }
   }
 
-  inline void buildBetween(int layer, int lBound, int rBound, int betweenOffs) {
+  void buildBetween(int layer, int lBound, int rBound, int betweenOffs) {
     int bSzLog = (layers[layer] + 1) >> 1;
     int bCntLog = layers[layer] >> 1;
     int bSz = 1 << bSzLog;
@@ -187,7 +208,7 @@ class SqrtTree {
     }
   }
 
-  inline void buildBetweenZero() {
+  void buildBetweenZero() {
     int bSzLog = (lg + 1) >> 1;
     for (int i = 0; i < indexSz; i++) {
       v[n + i] = suf[0][i << bSzLog];
@@ -195,7 +216,7 @@ class SqrtTree {
     build(1, n, n + indexSz, (1 << lg) - n);
   }
 
-  inline void updateBetweenZero(int bid) {
+  void updateBetweenZero(int bid) {
     int bSzLog = (lg + 1) >> 1;
     v[n + bid] = suf[0][bid << bSzLog];
     update(1, n, n + indexSz, (1 << lg) - n, n + bid);
@@ -236,7 +257,7 @@ class SqrtTree {
     update(layer + 1, l, r, betweenOffs, x);
   }
 
-  inline SqrtTreeItem query(int l, int r, int betweenOffs, int base) {
+  SqrtTreeItem query(int l, int r, int betweenOffs, int base) {
     if (l == r) {
       return v[l];
     }
@@ -262,9 +283,9 @@ class SqrtTree {
   }
 
  public:
-  inline SqrtTreeItem query(int l, int r) { return query(l, r, 0, 0); }
+  SqrtTreeItem query(int l, int r) { return query(l, r, 0, 0); }
 
-  inline void update(int x, const SqrtTreeItem &item) {
+  void update(int x, const SqrtTreeItem &item) {
     v[x] = item;
     update(0, 0, n, 0, x);
   }

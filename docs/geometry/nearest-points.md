@@ -94,7 +94,7 @@ $$
     double mindist;
     int ansa, ansb;
     
-    inline void upd_ans(const pt& a, const pt& b) {
+    void upd_ans(const pt& a, const pt& b) {
       double dist =
           sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + .0);
       if (dist < mindist) mindist = dist, ansa = a.id, ansb = b.id;
@@ -170,7 +170,7 @@ $$
     #include <cmath>
     #include <cstdio>
     #include <set>
-    const int N = 200005;
+    constexpr int N = 200005;
     int n;
     double ans = 1e20;
     
@@ -190,7 +190,7 @@ $$
       bool operator()(const point &a, const point &b) const { return a.y < b.y; }
     };
     
-    inline void upd_ans(const point &a, const point &b) {
+    void upd_ans(const point &a, const point &b) {
       double dist = sqrt(pow((a.x - b.x), 2) + pow((a.y - b.y), 2));
       if (ans > dist) ans = dist;
     }
@@ -229,11 +229,11 @@ $$
 
 ## 习题
 
--   [UVA 10245 "The Closest Pair Problem"\[难度：低\]](https://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=1186)
+-   [UVa 10245 "The Closest Pair Problem"\[难度：低\]](https://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=1186)
 -   [SPOJ #8725 CLOPPAIR "Closest Point Pair"\[难度：低\]](https://www.spoj.com/problems/CLOPPAIR/)
 -   [CODEFORCES Team Olympiad Saratov - 2011 "Minimum amount"\[难度：中\]](http://codeforces.com/contest/120/problem/J)
 -   [SPOJ #7029 CLOSEST "Closest Triple"\[难度：中\]](https://www.spoj.com/problems/CLOSEST/)
--   [Google Code Jam 2009 Final "Min Perimeter"\[难度：中\]](https://codingcompetitions.withgoogle.com/codejam/round/0000000000432ad5/0000000000433195)
+-   [Google Code Jam 2009 Final "Min Perimeter"\[难度：中\]](https://web.archive.org/web/20230329043437/https://codingcompetitions.withgoogle.com/codejam/round/0000000000432ad5/0000000000433195)
 
 ***
 

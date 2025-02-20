@@ -1,11 +1,11 @@
 #include <algorithm>
-#include <cstdio>
+#include <iostream>
 #include <map>
 #include <set>
 #define SNI set<nod>::iterator
 #define SDI set<data>::iterator
 using namespace std;
-const int N = 1e5 + 10;
+constexpr int N = 1e5 + 10;
 int n;
 int m;
 int pre[N];
@@ -39,25 +39,26 @@ struct qry {
 int tp2;
 int cnt;
 
-inline bool cmp(const qry& a, const qry& b) { return a.t < b.t; }
+bool cmp(const qry& a, const qry& b) { return a.t < b.t; }
 
-inline void modify(int pos, int co)  // 修改函数
+void modify(int pos, int co)  // 修改函数
 {
   if (npre[pos] == co) return;
-  md[++tp1] = (modi){++cnt, pos, npre[pos], -1};
-  md[++tp1] = (modi){++cnt, pos, npre[pos] = co, 1};
+  md[++tp1] = modi{++cnt, pos, npre[pos], -1};
+  md[++tp1] = modi{++cnt, pos, npre[pos] = co, 1};
 }
 
 namespace prew {
 int lst[2 * N];
 map<int, int> mp;  // 提前离散化
 
-inline void prew() {
-  scanf("%d%d", &n, &m);
-  for (int i = 1; i <= n; i++) scanf("%d", &a[i]), mp[a[i]] = 1;
+void prew() {
+  cin.tie(nullptr)->sync_with_stdio(false);
+  cin >> n >> m;
+  for (int i = 1; i <= n; i++) cin >> a[i], mp[a[i]] = 1;
   for (int i = 1; i <= m; i++) {
-    scanf("%d%d%d", &tp[i], &lf[i], &rt[i]);
-    if (tp[i] == 1) scanf("%d", &co[i]), mp[co[i]] = 1;
+    cin >> tp[i] >> lf[i] >> rt[i];
+    if (tp[i] == 1) cin >> co[i], mp[co[i]] = 1;
   }
   map<int, int>::iterator it, it1;
   for (it = mp.begin(), it1 = it, ++it1; it1 != mp.end(); ++it, ++it1)
@@ -91,53 +92,53 @@ struct nod {
 set<nod> c[2 * N];
 set<int> bd;
 
-inline void split(int mid) {  // 将一个节点拆成两个节点
-  SDI it = s.lower_bound((data){0, mid, 0});
+void split(int mid) {  // 将一个节点拆成两个节点
+  SDI it = s.lower_bound(data{0, mid, 0});
   data p = *it;
   if (mid == p.r) return;
   s.erase(p);
-  s.insert((data){p.l, mid, p.x});
-  s.insert((data){mid + 1, p.r, p.x});
-  c[p.x].erase((nod){p.l, p.r});
-  c[p.x].insert((nod){p.l, mid});
-  c[p.x].insert((nod){mid + 1, p.r});
+  s.insert(data{p.l, mid, p.x});
+  s.insert(data{mid + 1, p.r, p.x});
+  c[p.x].erase(nod{p.l, p.r});
+  c[p.x].insert(nod{p.l, mid});
+  c[p.x].insert(nod{mid + 1, p.r});
 }
 
-inline void del(set<data>::iterator it) {  // 删除一个迭代器
+void del(set<data>::iterator it) {  // 删除一个迭代器
   bd.insert(it->l);
   SNI it1, it2;
-  it1 = it2 = c[it->x].find((nod){it->l, it->r});
+  it1 = it2 = c[it->x].find(nod{it->l, it->r});
   ++it2;
   if (it2 != c[it->x].end()) bd.insert(it2->l);
   c[it->x].erase(it1);
   s.erase(it);
 }
 
-inline void ins(data p) {  // 插入一个节点
+void ins(data p) {  // 插入一个节点
   s.insert(p);
-  SNI it = c[p.x].insert((nod){p.l, p.r}).first;
+  SNI it = c[p.x].insert(nod{p.l, p.r}).first;
   ++it;
   if (it != c[p.x].end()) {
     bd.insert(it->l);
   }
 }
 
-inline void stv(int l, int r, int x) {  // 区间赋值
+void stv(int l, int r, int x) {  // 区间赋值
   if (l != 1) split(l - 1);
   split(r);
   int p = l;  // split两下之后删掉所有区间
   while (p != r + 1) {
-    SDI it = s.lower_bound((data){0, p, 0});
+    SDI it = s.lower_bound(data{0, p, 0});
     p = it->r + 1;
     del(it);
   }
-  ins((data){l, r, x});  // 扫一遍set处理所有变化的pre值
+  ins(data{l, r, x});  // 扫一遍set处理所有变化的pre值
   for (set<int>::iterator it = bd.begin(); it != bd.end(); ++it) {
-    SDI it1 = s.lower_bound((data){0, *it, 0});
+    SDI it1 = s.lower_bound(data{0, *it, 0});
     if (*it != it1->l)
       modify(*it, *it - 1);
     else {
-      SNI it2 = c[it1->x].lower_bound((nod){0, *it});
+      SNI it2 = c[it1->x].lower_bound(nod{0, *it});
       if (it2 != c[it1->x].begin())
         --it2, modify(*it, it2->r);
       else
@@ -147,20 +148,18 @@ inline void stv(int l, int r, int x) {  // 区间赋值
   bd.clear();
 }
 
-inline void ih() {
+void ih() {
   int nc = a[1];
   int ccnt = 1;  // 将连续的一段插入到set中
   for (int i = 2; i <= n; i++)
     if (nc != a[i]) {
-      s.insert((data){i - ccnt, i - 1, nc}),
-          c[nc].insert((nod){i - ccnt, i - 1});
+      s.insert(data{i - ccnt, i - 1, nc}), c[nc].insert(nod{i - ccnt, i - 1});
       nc = a[i];
       ccnt = 1;
     } else {
       ccnt++;
     }
-  s.insert((data){n - ccnt + 1, n, a[n]}),
-      c[a[n]].insert((nod){n - ccnt + 1, n});
+  s.insert(data{n - ccnt + 1, n, a[n]}), c[a[n]].insert(nod{n - ccnt + 1, n});
 }
 }  // namespace colist
 
@@ -169,30 +168,30 @@ struct treearray  // 树状数组
 {
   int ta[N];
 
-  inline void c(int x, int t) {
+  void c(int x, int t) {
     for (; x <= n; x += x & (-x)) ta[x] += t;
   }
 
-  inline void d(int x) {
+  void d(int x) {
     for (; x <= n; x += x & (-x)) ta[x] = 0;
   }
 
-  inline int q(int x) {
+  int q(int x) {
     int r = 0;
     for (; x; x -= x & (-x)) r += ta[x];
     return r;
   }
 
-  inline void clear() {
+  void clear() {
     for (int i = 1; i <= n; i++) ta[i] = 0;
   }
 } ta;
 
 int srt[N];
 
-inline bool cmp1(const int& a, const int& b) { return pre[a] < pre[b]; }
+bool cmp1(const int& a, const int& b) { return pre[a] < pre[b]; }
 
-inline void solve(int l1, int r1, int l2, int r2, int L, int R) {  // CDQ
+void solve(int l1, int r1, int l2, int r2, int L, int R) {  // CDQ
   if (l1 == r1 || l2 == r2) return;
   int mid = (L + R) / 2;
   int mid1 = l1;
@@ -212,13 +211,13 @@ inline void solve(int l1, int r1, int l2, int r2, int L, int R) {  // CDQ
   }
 }
 
-inline void mainsolve() {
+void mainsolve() {
   colist::ih();
   for (int i = 1; i <= m; i++)
     if (tp[i] == 1)
       colist::stv(lf[i], rt[i], co[i]);
     else
-      qr[++tp2] = (qry){++cnt, lf[i], rt[i], 0};
+      qr[++tp2] = qry{++cnt, lf[i], rt[i], 0};
   sort(qr + 1, qr + tp2 + 1);
   for (int i = 1; i <= n; i++) srt[i] = i;
   sort(srt + 1, srt + n + 1, cmp1);
@@ -230,7 +229,7 @@ inline void mainsolve() {
   sort(qr + 1, qr + tp2 + 1, cmp);
   solve(0, tp1, 0, tp2, 0, cnt);
   sort(qr + 1, qr + tp2 + 1, cmp);
-  for (int i = 1; i <= tp2; i++) printf("%d\n", qr[i].ans);
+  for (int i = 1; i <= tp2; i++) cout << qr[i].ans << '\n';
 }
 }  // namespace CDQ
 

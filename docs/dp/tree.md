@@ -20,9 +20,11 @@
 --8<-- "docs/dp/code/tree/tree_1.cpp"
 ```
 
+通常，树形 DP 状态一般都为当前节点的最优解。先 DFS 遍历子树的所有最优解，然后向上传递给子树的父节点来转移，最终根节点的值即为所求的最优解。
+
 ### 习题
 
--   [HDU 2196 Computer](https://vjudge.net/problem/HDU-2196)
+-   [HDU 2196 Computer](https://acm.hdu.edu.cn/showproblem.php?pid=2196)
 
 -   [POJ 1463 Strategic game](http://poj.org/problem?id=1463)
 
@@ -72,6 +74,8 @@ $f$ 的第二维可以很轻松地用滚动数组的方式省略掉，注意这�
 
 -   [「SDOI2017」苹果树](https://loj.ac/problem/2268)
 
+-   [「Codeforces Round 875 Div. 1」Problem D. Mex Tree](https://codeforces.com/contest/1830/problem/D)
+
 ## 换根 DP
 
 树形 DP 中的换根 DP 问题又被称为二次扫描，通常不会指定根结点，并且根结点的变化会对一些值，例如子结点深度和、点权和等产生影响。
@@ -104,9 +108,11 @@ $f_v\leftarrow f_u$ 可以体现换根，即以 $u$ 为根转移到以 $v$ 为�
 
 ### 习题
 
--   [POJ 3585 Accumulation Degree](http://poj.org/problem?id=3585)
+-   [Atcoder Educational DP Contest, Problem V, Subtree](https://atcoder.jp/contests/dp/tasks/dp_v)
 
--   [\[POI2008\]STA-Station](https://www.luogu.com.cn/problem/P3478)
+-   [Educational Codeforces Round 67, Problem E, Tree Painting](https://codeforces.com/contest/1187/problem/E)
+
+-   [POJ 3585 Accumulation Degree](http://poj.org/problem?id=3585)
 
 -   [\[USACO10MAR\]Great Cow Gathering G](https://www.luogu.com.cn/problem/P2986)
 

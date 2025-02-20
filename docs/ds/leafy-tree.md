@@ -32,7 +32,7 @@ Leafy Tree 的旋转操作类似于替罪羊树，仅需一次旋转。
 ```cpp
 #define new_Node(a, b, c, d) (&(*st[cnt++] = Node(a, b, c, d)))
 #define merge(a, b) new_Node(a->size + b->size, b->val, a, b)
-#define ratio 4
+constexpr int ratio = 4;
 
 struct Node {
   int size, val;
@@ -45,10 +45,10 @@ struct Node {
 
 Node *root, *null, *st[200010], t[200010];
 
-inline void rotate(Node *u) {
-  if (u->lf->size > u->rf->size * ratio)
+void rotate(Node *u) {
+  if (u->lf->size > u->rf->size * ::ratio)
     u->rf = merge(u->lf->rf, u->rf), st[--cnt] = u->lf, u->lf = u->lf->lf;
-  if (u->rf->size > u->lf->size * ratio)
+  if (u->rf->size > u->lf->size * ::ratio)
     u->lf = merge(u->lf, u->rf->lf), st[--cnt] = u->rf, u->rf = u->rf->rf;
 }
 ```
@@ -58,7 +58,7 @@ inline void rotate(Node *u) {
 类似二叉树的插入过程。
 
 ```cpp
-inline void insert(Node *u, int x) {
+void insert(Node *u, int x) {
   if (u->size == 1)
     u->lf = new_Node(1, Min(u->val, x), null, null),
     u->rf = new_Node(1, Max(u->val, x), null, null);
@@ -83,6 +83,7 @@ void BTreeNode::traverse() {
   else
     erase(x > u->lf->val ? u->rf : u->lf, x);
   update(u), rotate(u);
+}
 ```
 
 ### 查找
@@ -90,7 +91,7 @@ void BTreeNode::traverse() {
 假设需要查找排名第 $x$ 大的元素。
 
 ```cpp
-inline int find(Node *u, int x) {
+int find(Node *u, int x) {
   if (u->size == 1) return u->val;
   return u->lf->size < x ? find(u->rf, x - u->lf->size) : find(u->lf, x);
 }

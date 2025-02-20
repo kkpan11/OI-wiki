@@ -41,15 +41,15 @@
 
 ???+ note "参考代码"
     ```c++
-    #include <bits/stdc++.h>
+    #include <cstdio>
     using namespace std;
-    const int N = 15;
-    typedef long long ll;
-    ll l, r, dp[N], sum[N], mi[N];
+    constexpr int N = 15;
+    using ll = long long;
+    ll l, r, dp[N], mi[N];
     ll ans1[N], ans2[N];
     int a[N];
     
-    inline void solve(ll n, ll *ans) {
+    void solve(ll n, ll *ans) {
       ll tmp = n;
       int len = 0;
       while (n) a[++len] = n % 10, n /= 10;
@@ -86,19 +86,19 @@
 
 ???+ note "参考代码"
     ```c++
-    #include <cstdio>  //code by Alphnia
+    #include <cstdio>
     #include <cstring>
     #include <iostream>
     using namespace std;
-    #define N 50005
-    #define ll long long
+    using ll = long long;
+    constexpr int N = 50005;
     ll a, b;
     ll f[15], ksm[15], p[15], now[15];
     
     ll dfs(int u, int x, bool f0,
            bool lim) {  // u 表示位数，f0 是否有前导零，lim 是否都贴在上限上
       if (!u) {
-        if (f0) f0 = 0;
+        if (f0) f0 = false;
         return 0;
       }
       if (!lim && !f0 && (~f[u])) return f[u];
@@ -143,24 +143,24 @@
 
 ## 例题二
 
-???+ note " 例 2 [hdu 2089 不要 62](https://vjudge.net/problem/HDU-2089)"
+???+ note " 例 2 [HDU 2089 不要 62](https://acm.hdu.edu.cn/showproblem.php?pid=2089)"
     题面大意：统计一个区间内数位上不能有 4 也不能有连续的 62 的数有多少。
 
 ### 解释
 
-没有 4 的话在枚举的时候判断一下，不枚举 4 就可以保证状态合法了，所以这个约束没有记忆化的必要，而对于 62 的话，涉及到两位，当前一位是 6 或者不是 6 这两种不同情况我计数是不相同的，所以要用状态来记录不同的方案数。$\mathit{dp}_{\mathit{pos},\mathit{sta}}$ 表示当前第 $\mathit{pos}$ 位，前一位是否是 6 的状态，这里 $\mathit{sta}$ 只需要取 0 和 1 两种状态就可以了，不是 6 的情况可视为同种，不会影响计数。
+没有 4 的话在枚举的时候判断一下，不枚举 4 就可以保证状态合法了，所以这个约束没有记忆化的必要，而对于 62 的话，涉及到两位，当前一位是 6 或者不是 6 这两种不同情况计数是不相同的，所以要用状态来记录不同的方案数。$\mathit{dp}_{\mathit{pos},\mathit{sta}}$ 表示当前第 $\mathit{pos}$ 位，前一位是否是 6 的状态，这里 $\mathit{sta}$ 只需要取 0 和 1 两种状态就可以了，不是 6 的情况可视为同种，不会影响计数。
 
 ### 实现
 
 ???+ note "参考代码"
     ```c++
-    #include <cstdio>  //code by Alphnia
+    #include <cstdio>
     #include <cstring>
     #include <iostream>
     using namespace std;
     int x, y, dp[15][3], p[50];
     
-    inline int pre() {
+    int pre() {
       memset(dp, 0, sizeof(dp));
       dp[0][0] = 1;
       for (int i = 1; i <= 10; i++) {
@@ -170,13 +170,13 @@
       }
     }
     
-    inline int cal(int x) {
+    int cal(int x) {
       int cnt = 0, ans = 0, tmp = x;
       while (x) {
         p[++cnt] = x % 10;
         x /= 10;
       }
-      bool flag = 0;
+      bool flag = false;
       p[cnt + 1] = 0;
       for (int i = cnt; i; i--) {  // 从高到低枚举数位
         ans += p[i] * dp[i - 1][2];
@@ -186,7 +186,7 @@
           if (p[i] > 4) ans += dp[i - 1][0];
           if (p[i] > 6) ans += dp[i - 1][1];
           if (p[i] > 2 && p[i + 1] == 6) ans += dp[i][1];
-          if (p[i] == 4 || (p[i] == 2 && p[i + 1] == 6)) flag = 1;
+          if (p[i] == 4 || (p[i] == 2 && p[i + 1] == 6)) flag = true;
         }
       }
       return tmp - ans;
@@ -226,7 +226,7 @@
 
 ???+ note "参考代码"
     ```cpp
-    int dfs(int x, int st, int op)  // op=1 =;op=0 <
+    int dfs(int x, int st, int op)  // op=1 =; op=0 <
     {
       if (!x) return 1;
       if (!op && ~f[x][st]) return f[x][st];
@@ -343,16 +343,18 @@
 
 ???+ note "参考代码"
     ```c++
-    #include <bits/stdc++.h>  //code by Alphnia
+    #include <cstdio>
+    #include <cstring>
+    #include <queue>
     using namespace std;
-    #define N 1505
-    #define ll long long
-    #define mod 1000000007
+    using ll = long long;
+    constexpr int N = 1505;
+    constexpr int mod = 1000000007;
     int n, m;
     char s[N], c[N];
     int ch[N][10], fail[N], ed[N], tot, len;
     
-    inline void insert() {
+    void insert() {
       int now = 0;
       int L = strlen(s);
       for (int i = 0; i < L; ++i) {
@@ -364,7 +366,7 @@
     
     queue<int> q;
     
-    inline void build() {
+    void build() {
       for (int i = 0; i < 10; ++i)
         if (ch[0][i]) q.push(ch[0][i]);
       while (!q.empty()) {
@@ -383,7 +385,7 @@
     
     ll f[N][N][2], ans;
     
-    inline void add(ll &x, ll y) { x = (x + y) % mod; }
+    void add(ll &x, ll y) { x = (x + y) % mod; }
     
     int main() {
       scanf("%s", c);
@@ -421,7 +423,7 @@
 
 [洛谷  P3413 SAC#1 - 萌数](https://www.luogu.com.cn/problem/P3413)
 
-[HDU 6148 Valley Number](https://vjudge.net/problem/HDU-6148)
+[HDU 6148 Valley Number](https://acm.hdu.edu.cn/showproblem.php?pid=6148)
 
 [CF55D Beautiful numbers](http://codeforces.com/problemset/problem/55/D)
 

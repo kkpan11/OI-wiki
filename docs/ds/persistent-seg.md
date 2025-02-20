@@ -3,7 +3,7 @@
 主席树全称是可持久化权值线段树，参见 [知乎讨论](https://www.zhihu.com/question/59195374)。
 
 ???+ warning "关于函数式线段树"
-    **函数式线段树** 是指使用函数式编程思想的线段树。在函数式编程思想中，将计算机运算视为数学函数，并避免可改变的状态或变量。不难发现，函数式线段树是 [完全可持久化](../persistent/#完全可持久化-fully-persistent) 的。
+    **函数式线段树** 是指使用函数式编程思想的线段树。在函数式编程思想中，将计算机运算视为数学函数，并避免可改变的状态或变量。不难发现，函数式线段树是 [完全可持久化](persistent.md#完全可持久化-fully-persistent) 的。
 
 ## 引入
 
@@ -52,13 +52,13 @@
 #include <cstdio>
 #include <cstring>
 using namespace std;
-const int maxn = 1e5;  // 数据范围
+constexpr int MAXN = 1e5;  // 数据范围
 int tot, n, m;
-int sum[(maxn << 5) + 10], rt[maxn + 10], ls[(maxn << 5) + 10],
-    rs[(maxn << 5) + 10];
-int a[maxn + 10], ind[maxn + 10], len;
+int sum[(MAXN << 5) + 10], rt[MAXN + 10], ls[(MAXN << 5) + 10],
+    rs[(MAXN << 5) + 10];
+int a[MAXN + 10], ind[MAXN + 10], len;
 
-inline int getid(const int &val) {  // 离散化
+int getid(const int &val) {  // 离散化
   return lower_bound(ind + 1, ind + len + 1, val) - ind;
 }
 
@@ -93,7 +93,7 @@ int query(int u, int v, int l, int r, int k) {  // 查询操作
     return query(rs[u], rs[v], mid + 1, r, k - x);
 }
 
-inline void init() {
+void init() {
   scanf("%d%d", &n, &m);
   for (int i = 1; i <= n; ++i) scanf("%d", a + i);
   memcpy(ind, a, sizeof ind);
@@ -105,7 +105,7 @@ inline void init() {
 
 int l, r, k;
 
-inline void work() {
+void work() {
   while (m--) {
     scanf("%d%d%d", &l, &r, &k);
     printf("%d\n", ind[query(rt[l - 1], rt[r], 1, len, k)]);  // 回答询问

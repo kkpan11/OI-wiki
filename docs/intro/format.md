@@ -46,7 +46,7 @@
     -   对于工具类内容的撰写应该尽量包含以下的内容：
 
         1.  简介：阐明该工具的背景与用途。
-        2.  配置方式：详细给出下载、安装、配置环境与使用的过程。
+        2.  配置方式：详细给出配置环境与使用的过程，下载与安装方法建议尽量引用官方文档。
 
         示例页面：[WSL (Windows 10)](../tools/wsl.md)
 
@@ -98,7 +98,7 @@
 #### 标点符号的使用
 
 -   请在每句话的末尾添加 **句号**。
--   请正确使用 **全角** 标点符号与 **半角** 标点符号。汉语请使用全角符号，英语请使用半角符号。中文中夹用英文时，请参考 [中文出版物夹用英文的编辑规范](https://www.nppa.gov.cn/nppa/contents/805/102791.shtml)。
+-   请正确使用 **全角** 标点符号与 **半角** 标点符号。汉语请使用全角符号，英语请使用半角符号。中文中夹用英文时，请参考 [中文出版物夹用英文的编辑规范](https://www.nppa.gov.cn/xxgk/fdzdgknr/hybz/202210/t20221004_445147.html)。
 -   由于 `“……”` 未区分全半角，请使用 `「……」` 作为全角引号，`"..."` 作为半角引号。
 -   注意区分 **顿号** 与 **逗号** 的使用。
 -   注意 **括号** 的位置。句内括号与句外括号的位置不同。
@@ -124,6 +124,8 @@
 #### Markdown 格式与主题扩展格式要求
 
 -   表示强调时请使用 `**SOMETHING**` 和 `「」`，而非某级标题，因为使用标题会导致文章结构层次混乱和（或）目录出现问题。
+
+-   当需要引用题目链接时，应尽可能使用原 OJ 题库中的链接而不是镜像链接。
 
 -   请正确使用 Markdown 的区块功能。插入行内代码请使用一对反引号包围代码区块；行间代码请使用一对 ` ``` ` 包围代码区块，其中反引号就是键盘左上角波浪线下面那个符号，行间代码请在第一个 ` ``` ` 的后面加上语言名称（如：` ```cpp`）。
 
@@ -175,14 +177,14 @@
     ```text
     ??? note "标题"
         这个文本框会被默认折叠。
-
+        
         推荐将 **解题代码** 放在折叠文本框内。
 
-    ???+note "[HDOJ 的「A + B Problem」](https://vjudge.net/problem/HDU-1000)"
+    ???+note "[HDOJ 的「A + B Problem」](https://acm.hdu.edu.cn/showproblem.php?pid=1000)"
         标题也可以使用 Markdown 的超链接。这里的超链接是 HDOJ 的「A + B Problem」。
-
+        
         而且推荐以这种方式**标注原题链接**。
-
+        
         注意双引号的位置。
     ```
 
@@ -193,7 +195,7 @@
         
         推荐将 **解题代码** 放在折叠文本框内。
 
-    ???+ note "[HDOJ 的「A + B Problem」](https://vjudge.net/problem/HDU-1000)"
+    ???+ note "[HDOJ 的「A + B Problem」](https://acm.hdu.edu.cn/showproblem.php?pid=1000)"
         标题也可以使用 Markdown 的超链接。这里的超链接是 HDOJ 的「A + B Problem」。
         
         而且推荐以这种方式 **标注原题链接**。
@@ -204,7 +206,57 @@
 
     折叠框的标题，即 `???+note` 中 `note` 后的内容应以 `"` 包裹起来。其中的内容支持 Markdown 语法。详见 [Admonition - Changing the title](https://squidfunk.github.io/mkdocs-material/reference/admonitions/#changing-the-title)。（不具备折叠功能的为一般的 Admonitions，参考 [Admonitions - Material for MkDocs](https://squidfunk.github.io/mkdocs-material/reference/admonitions)）
 
-如果对 mkdocs-material（我们使用的这个主题）还有什么问题，还可以查阅 [MkDocs 使用说明](https://github.com/ctf-wiki/ctf-wiki/wiki/Mkdocs-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E) 和 [cyent 的笔记](https://cyent.github.io/markdown-with-mkdocs-material/)。前者介绍了 mkdocs-material 主题的插件使用方式，而后者介绍了 Markdown 传统语法和 mkdocs-material 支持的扩展语法。
+-   当需要添加不同语言的代码时，推荐使用 Content tabs，可以实现不同语言代码的切换。Content tabs 还有其他的用法，详见 [Content tabs](https://squidfunk.github.io/mkdocs-material/reference/content-tabs/#usage)。其使用方法和效果如下。
+
+    ???+ success "示例"
+        ````text
+        注意需要在文本前面添加 4 个空格。其他的语法还是与 Markdown 语法一致。
+        
+        === "C"
+        
+            ``` c
+            #include <stdio.h>
+            
+            int main(void) {
+              printf("Hello world!\n");
+              return 0;
+            }
+            ```
+            
+        === "C++"
+        
+            ``` c++
+            #include <iostream>
+            
+            int main(void) {
+              std::cout << "Hello world!" << std::endl;
+              return 0;
+            }
+            ```
+            
+        ````
+        
+        === "C"
+            ```c
+            #include <stdio.h>
+            
+            int main(void) {
+              printf("Hello world!\n");
+              return 0;
+            }
+            ```
+        
+        === "C++"
+            ```c++
+            #include <iostream>
+            
+            int main(void) {
+              std::cout << "Hello world!" << std::endl;
+              return 0;
+            }
+            ```
+
+如果对 mkdocs-material（我们使用的这个主题）还有什么问题，还可以查阅 [MkDocs 使用说明](https://github.com/ctf-wiki/ctf-wiki/wiki/Mkdocs-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)，其介绍了 mkdocs-material 主题的插件使用方式。
 
 #### 文本内容的格式要求
 
@@ -221,7 +273,7 @@
 
     ???+ success "示例"
         前置知识：[时间复杂度](../basic/complexity.md)
-        
+
         本页面将介绍基础的计算理论的知识。
 
 -   请注意文档结构。文档结构应当十分条理，层次清晰。请不要让诸如「五级标题」这种事情再次发生了，一篇正常的文章是用不到如此复杂的结构层次的。
@@ -232,7 +284,7 @@
 
     建议使用源文章或者标签页的标题。
 
-    ???+ fail "不推荐的写法"
+    ???+ failure "不推荐的写法"
         ```markdown
         请参考[这个页面](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork)
         
@@ -247,7 +299,7 @@
         ```markdown
         请参考 GitHub 官方的帮助页面 [Syncing a fork - GitHub Docs](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork)
         ```
-        
+
         请参考 GitHub 官方的帮助页面 [Syncing a fork - GitHub Docs](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork)
 
 -   受 Markdown 格式限制，`## 参考资料与注释` 二级标题必须放在文末。
@@ -277,7 +329,7 @@ LaTeX 作为公式排版的首选，我们应当正确地使用它。因此对�
 
     所以在输入常量、函数名、运算符等时，请先检查一下是否应该使用 Roman 体或其它字体。LaTeX 符号的书写可参考 [KaTeX 的 Supported Functions 页面](https://katex.org/docs/supported.html)（不是全部），也可以搜索求解。
 
-    由于 LaTeX 书写 Roman 体小写希腊字母较为困难，故小写希腊字母常量、算子和函数可以使用 Italic 体，如 $\pi$，$\delta x$.
+    由于 LaTeX 书写 Roman 体小写希腊字母较为困难，故小写希腊字母常量、算子和函数可以使用 Italic 体，如 $\pi$ 以及 $\delta x$ 中的 $\delta$.
 
     如果遇到没有预先定义好的需要使用 Roman 体的 **函数名**，我们可以使用 `$\operatorname{something}$` 来产生，如我们可以使用 `$\operatorname{lcm}$` 产生正体的最小公倍数（函数）符号。同理，产生 Roman 体的 **常量** 应用 `$\mathrm{}$`；产生 Roman 体粗体符号应用 `$\mathbf{}$`；产生 Italic 体粗体符号应用 `$\boldsymbol{}$`（如向量 $\boldsymbol{a}$）。对于多字母的变量，应当使用 `$\textit{}$`。其他非数学内容，包括英文、特殊符号等，一律使用 `$\text{}$`。中文我们则建议不放在 LaTeX 公式中。
 
@@ -320,7 +372,7 @@ LaTeX 作为公式排版的首选，我们应当正确地使用它。因此对�
 -   请不要滥用 LaTeX 公式。这不仅会造成页面加载缓慢（因为 MathJax 的效率低是出了名的），同时也会导致页面的排版混乱。我们通常使用 LaTeX 公式字体表示变量名称。我们的建议是，如非必要，尽量减少公式与普通正文字体的 **大量** 混合使用，如非必要，尽量不要使用公式，如：
 
     ```LaTeX
-    我们将要学习 $Network-flow$ 中的 $SPFA$ 最小费用流，需要使用 $Edmonds-Karp$ 算法进行增广。
+    我们将要学习 $Network-flow$ 中的 $SPFA$ 最小费用流，需要使用 $Edmonds–Karp$ 算法进行增广。
     ```
 
     就是一个典型的 **滥用公式字体** 的例子。（在页面中使用斜体请用 `*文本*` 表示。）
@@ -346,7 +398,7 @@ LaTeX 作为公式排版的首选，我们应当正确地使用它。因此对�
 | `$f[i][j][k]$`               | $f[i][j][k]$      | `$f_{i,j,k}$, $f(i,j,k)$`                | $f_{i,j,k}$，$f(i,j,k)$              |
 | `$R,N^*$`（集合）                | $R,N^*$           | `$\mathbf{R}$, $\mathbf{N}^*$`           | $\mathbf{R}$，$\mathbf{N}^*$         |
 | `$\emptyset$`                | $\emptyset$       | `$\varnothing$`                          | $\varnothing$                       |
-| `$different$`                | $different$       | `$\textit{different}$`                   | $\textit{different}$                |
+| `$size$`                     | $size$            | `$\textit{size}$`                        | $\textit{size}$                     |
 
 #### 对数学公式的附加格式要求
 
@@ -449,6 +501,28 @@ $$
 
 -   最后，可以将代码添加到文档中了。请直接在文档中用添加代码块的格式，并将代码块内部直接写成 `--8<-- "你的代码路径"` 的格式就可以了。
 
+**OI Wiki** 会对例题代码进行全平台测试，为保证您的代码能够顺利通过测试，请遵守如下规则：
+
+-   您的代码需要同时支持在 C++14、C++17、C++20 标准下编译和运行。
+-   不要使用 `<bits/stdc++.h>`、`<bits/extc++.h>` 等非标准头文件。
+-   标准答案文件不要有多余空格。
+-   不要使用 [代用记号](https://en.cppreference.com/w/cpp/language/operator_alternative#Alternative_tokens)。
+-   使用 [聚合初始化](https://en.cppreference.com/w/cpp/language/aggregate_initialization) 时，`object{args}` 不可写成 `(object){args}`。
+-   使用 [运算符重载](https://en.cppreference.com/w/cpp/language/operators) 时注意格式，如重载比较运算符时，若使用成员函数写法，则不可省略 `const` 限定符。
+-   不要使用类似 `#define int long long` 的宏定义。
+-   若您需要使用 C 风格的 [有格式输入/输出](https://en.cppreference.com/w/cpp/io/c#Formatted_input.2Foutput)，请特别留意格式指示符的写法：如 `size_t` 对应 `%zu`，`ptrdiff_t` 对应 `%td`。例如输出某 STL 容器的大小时，代码应类似 `printf("%zu", container.size());`。
+-   由于当前测试环境 libstdc++ 的 `<chrono>` 库有 [BUG](https://github.com/actions/runner-images/issues/8659)，所以请避免使用 `<chrono>` 库。
+-   由于 `long` 与 `unsigned long` 在某些测试环境下为 32 位，而在另一些测试环境下为 64 位，为确保各平台代码行为一致，故不推荐使用这两种类型。推荐使用 [定宽整数类型](../lang/var.md#定宽整数类型)。
+-   不建议使用 `__gcd`、`__int128`、`__builtin_` 系列函数等非标准内容。如果您需要使用，则需确保您的代码能通过全平台测试，如 [此代码](https://github.com/OI-wiki/OI-wiki/blob/4af83d6db6017f4c36db6d4a7583bbc3f6257484/docs/ds/code/tree-decompose/tree-decompose_1.cpp#L24-L47) 提供了 libstdc++ 中 [std::bitset](../lang/csl/bitset.md) 特有成员函数 `_Find_first()` 的全平台实现。
+
+此外，为了提高代码的可读性，建议遵守如下规则：
+
+-   代码应尽可能简洁易懂，不要过度压行，不要引入过多无关代码（如未使用的宏定义等）。
+-   不推荐对函数使用 `inline` 关键字，详见 [编译优化](../lang/optimizations.md#inline---内联)。
+-   不要用 `0` 代替 `false`/`NULL`/`nullptr` 等，不要用 `1` 代替 `true` 等。
+-   在声明 [类型别名](https://en.cppreference.com/w/cpp/language/type_alias) 时，不推荐使用 `typedef`，推荐使用 `using`。
+-   不推荐用宏定义定义常量，推荐直接使用 `constexpr`/`const` 等关键字定义常量。
+
 ## 图解
 
 可能上述要求把握起来有些困难，接下来我们给出一些图片来具体分析哪种格式应该使用，哪种不该使用：
@@ -508,7 +582,7 @@ $$
 -   [中文文案排版指北（简体中文版）](https://mazhuang.org/wiki/chinese-copywriting-guidelines/)
 -   [中文文案风格指南 - PDFE GUIDELINE](https://pdfe.github.io/GUIDELINE/#/others/copywriter)
 -   [一份（不太）简短的 LATEX2ε 介绍或 106 分钟了解 LATEX2ε](https://github.com/CTeX-org/lshort-zh-cn/releases)
--   [中文出版物夹用英文的编辑规范](https://www.nppa.gov.cn/nppa/contents/805/102791.shtml)
+-   [中文出版物夹用英文的编辑规范](https://www.nppa.gov.cn/xxgk/fdzdgknr/hybz/202210/t20221004_445147.html)
 
 ## 参考资料与注释
 
